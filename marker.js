@@ -11,7 +11,6 @@ class Marker {
         let style = document.createElement('style')
         let className = `marker-${this.name}-${newMarkNumber}`
         style.innerHTML = `.${className} {background-color: ${this.color}}`
-        // this.marks[newMarkNumber] = style
         document.body.appendChild(style)
         return {
             className: className,
@@ -20,6 +19,10 @@ class Marker {
                 style.innerHTML = `.${className} {background-color: white}`
             },
             enableHandler: () => {
+                style.innerHTML = `.${className} {background-color: ${this.color}}`
+            },
+            changeColor: (color) => {
+                this.color = color
                 style.innerHTML = `.${className} {background-color: ${this.color}}`
             }
         }
@@ -74,7 +77,6 @@ class Marker {
     }
 
     _recursiveMark = (node, till, className=null, handler=null) => {
-        console.log('rec called')
         if(node.nodeName == '#text'){
             this._markTextNode(node, -1, -1, className, handler)
         }
@@ -114,12 +116,18 @@ class Marker {
                 currentNode = parentNode
             }
         }
+        return {
+            disableHandler: config.disableHandler,
+            enableHandler: config.enableHandler,
+            changeColor: config.changeColor
+        }
     }
 
     markSelectedText = () => {
         let selection = getSelection()
-        this.markText(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset)
+        let res = this.markText(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset)
         selection.removeAllRanges()
+        return res
     }
 
 }
