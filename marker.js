@@ -3,10 +3,26 @@ class Marker {
         this.color = color
         this.name = name
         this.markNumber = -1
+        this.marks = []
     }
 
-    _getNewMarkNumber = () => {
-        return ++this.markNumber
+    _getNewMark = () => {
+        let newMarkNumber = ++this.markNumber
+        let style = document.createElement('style')
+        let className = `marker-${this.name}-${newMarkNumber}`
+        style.innerHTML = `.${className} {background-color: ${this.color}}`
+        // this.marks[newMarkNumber] = style
+        document.body.appendChild(style)
+        return {
+            className: className,
+            markNumber: newMarkNumber,
+            disableHandler: () => {
+                style.innerHTML = `.${className} {background-color: white}`
+            },
+            enableHandler: () => {
+                style.innerHTML = `.${className} {background-color: ${this.color}}`
+            }
+        }
     }
 
     _correctOrdering(lnode, loffset, rnode, roffset) {
@@ -19,12 +35,14 @@ class Marker {
         return [lnode, loffset, rnode, roffset] 
     }
 
-    _markTextNode = (textNode, l = -1, r = -1) => {
+    _markTextNode = (textNode, l = -1, r = -1, className, handler) => {
         if(textNode.nodeName != '#text') return textNode
         // console.log('mark', textNode.textContent, l, r)
 
         let parentNode = textNode.parentNode
         let markNode = document.createElement('mark')
+        markNode.classList.add(className)
+        markNode.onclick = handler
         // set class here for mark node
 
         if(r == -1 && l == -1) {
@@ -55,11 +73,10 @@ class Marker {
         return markNode.firstChild
     }
 
-    _recursiveMark = (node, till) => {
-        console.log(node)
+    _recursiveMark = (node, till, className=null, handler=null) => {
+        console.log('rec called')
         if(node.nodeName == '#text'){
-            this._markTextNode(node)
-
+            this._markTextNode(node, -1, -1, className, handler)
         }
         else {
             let currentNode = node.firstChild
@@ -67,7 +84,7 @@ class Marker {
             while(currentNode) {
                 if(currentNode === till) return true
                 let sibling = currentNode.nextSibling
-                found = this._recursiveMark(currentNode, till)
+                found = this._recursiveMark(currentNode, till, className, handler)
                 if(found) return found
                 currentNode = sibling
             }
@@ -78,17 +95,20 @@ class Marker {
     markText = (lnode, loffset, rnode, roffset) => {
         [lnode, loffset, rnode, roffset] = this._correctOrdering(lnode, loffset, rnode, roffset)
 
+        let config = this._getNewMark()
+        console.log(config)
+        // return
         if(lnode === rnode) {
-            this._markTextNode(lnode, loffset, roffset)
+            this._markTextNode(lnode, loffset, roffset, config.className, config.disableHandler)
         }
         else {
-            lnode = this._markTextNode(lnode, loffset, -1)
-            rnode = this._markTextNode(rnode, -1, roffset)
+            lnode = this._markTextNode(lnode, loffset, -1, config.className, config.disableHandler)
+            rnode = this._markTextNode(rnode, -1, roffset, config.className, config.disableHandler)
             let currentNode = lnode
             while(currentNode.parentNode) {
                 let parentNode = currentNode.parentNode
                 while(currentNode.nextSibling) {
-                    if(this._recursiveMark(currentNode.nextSibling, rnode)) return
+                    if(this._recursiveMark(currentNode.nextSibling, rnode, config.className, config.disableHandler)) return
                     currentNode = currentNode.nextSibling   
                 }
                 currentNode = parentNode
