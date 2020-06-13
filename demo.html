@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Doc</title>
+    <script src="marker.js"></script>
+</head>
+<body>
+    <div>
+        <div>
+            Text1
+            <div>
+                Text2
+                <h6>Text3</h6>
+                Text4
+            </div>
+            Text5
+        </div>
+        <div>
+            Text6<h6>Text7</h6>
+        </div>
+        <div>
+            <h6>Text8</h6>Text9
+        </div>
+        
+        <div>
+            <div>
+                Text10
+                <h6>Text11</h6>
+                <div>
+                    Text12
+                    <h6>Text13</h6>
+                </div>
+                Text14
+            </div>
+            Text15
+        </div>
+    </div>
+    <button id="btn">CLK</button>
+</body>
+<script>
+    const marker = new Marker()
+    document.getElementById('btn').addEventListener('click', e => marker.markSelectedText())
+</script>
+</html>
