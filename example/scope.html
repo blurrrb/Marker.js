@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="content-type" content="text/html" />
+  <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>scope mark</title>
+<link rel="stylesheet" href="asset.css" />
+<script src="../dist/marker.min.js"></script>
+<style>
+#btn1, #btn2 { padding: 5px; }
+#div1 {
+  border: 2px solid gray;
+  padding: 20px;
+}
+</style>
+</head>
+<body class="box">
+
+  <div id="root">
+    <h1>scope</h1>
+    <br />
+    <div style="margin-bottom: 10px" class="box">
+      <button id="btn1" onclick="activate()">Activate</button>
+      <button id="btn2" onclick="clearMark()">Clear</button>
+    </div>
+    <div id="div1">SELECTION TARGET SAMPLE TEXT</div>
+    <div style="margin-top: 5px">OUT OF SCOPE</div>
+  </div>
+
+<script>
+let div1 = document.querySelector('#div1')
+let marker = new Marker( color='#ffeb3b', name='m1' )
+let div1_history = div1.innerHTML
+function clearMark() { div1.innerHTML = div1_history }
+function activate() {
+  div1.addEventListener( 'click', (e)=> {
+    try { marker.markSelectedText() } catch(e) {}
+  })
+}
+</script>
+</body>
+</html>

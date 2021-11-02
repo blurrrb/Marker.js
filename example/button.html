@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Doc</title>
-    <script src="marker.js"></script>
+    <title>button mark</title>
+    <link href="asset.css" rel="stylesheet" />
 </head>
-<body>
+<body class="box">
     <div>
         <div>
             Text1
@@ -37,8 +37,9 @@
             Text15
         </div>
     </div>
-    <button id="btn">CLK</button>
+    <button id="btn">CLICK</button>
 </body>
+<script src="../src/marker.js"></script>
 <script>
     const marker = new Marker(color='red', name='m1')
     document.getElementById('btn').addEventListener('click', e => marker.markSelectedText())
