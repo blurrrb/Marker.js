@@ -8,4 +8,6 @@ Create instance
 let marker = new Marker( color='#ffeb3b', name='m1' )
 ```
 
-See example
+[demo](https://gist.run/?id=648526b4fc2236972172a0ca8b21d5f3)
+
+See **example**/
