@@ -16,7 +16,7 @@ class Marker {
             className: className,
             markNumber: newMarkNumber,
             disableHandler: () => {
-                style.innerHTML = `.${className} {background-color: white}`
+                style.innerHTML = `.${className} {background-color: transparent; color: inherit}`
             },
             enableHandler: () => {
                 style.innerHTML = `.${className} {background-color: ${this.color}}`
